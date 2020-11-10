@@ -1,16 +1,15 @@
 const request = require('request');
+const fs = require('fs');
 const http_adress = process.argv.slice(2)[0];
 const saving_file = process.argv.slice(2)[1];
 
-
-
-console.log('SAVING FILE =>', saving_file);
-console.log('HTTP ADRESS =>', http_adress)
-
 request(http_adress, (error, response, body) => {
-  console.log('error:', error); // Print the error if one occurred
-
-//   const data = JSON.parse(body);
-  console.log("data => ", body);
-//   console.log(typeof data);
+    console.log('ERROR =>', error);
+    const content = body;
+    try {
+      const data = fs.writeFileSync('./index.html', content)
+      console.log(`Downloaded and saved ${response.headers["content-length"]} bytes to ${saving_file}`)
+    } catch (err) {
+      console.error('ERROR =>',err)
+    }
 });
